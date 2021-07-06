@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEARTHSTONE</title>
+    <style>
+      #body {
+        padding: 0;
+        margin: 0;
+        }
+
+      #nav {
+        width: 100%;
+        display: flex;
+        position: fixed;
+        height: 120px;
+        background-color: rgb(26, 26, 26);
+        z-index: 99;
+      }
+
+      #nav a {
+        color: #fff;
+        margin: auto 20px auto 40px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .list {
+        display: flex;
+        align-items: center;
+      }
+      #nav li {
+        color: #fff;        
+        float: left;
+        list-style: none;
+        font-weight: bold;
+        margin-left: 40px;
+      }
+      .logo {
+        width: 200px;
+      }
+    </style>
+</head>
+<body id="body">
+  <nav id="nav">
+    <a href="#"><img class="logo" src="logo.webp" alt="Logo"></a>
+    <ul class="list">
+      <li>
+        TYPE
+        <select name="type" id="type">
+          <option value="">Selecionar</option>
+        </select>
+      </li>
+      <li>
+        CLASS
+        <select name="classe" id="classe">
+          <option value="">Selecionar</option>
+        </select>
+      </li>
+      <li>
+        FACTION
+        <select name="faction" id="faction">
+          <option value="">Selecionar</option>
+        </select>
+      </li>
+      <li>
+        QUALITIE
+        <select name="qualitie" id="qualitie">
+          <option value="">Selecionar</option>
+        </select>
+      </li>
+    </ul>
+  </nav>
+
+  <script>
+    const typeNav = document.querySelector('#type')
+    const classeNav = document.querySelector('#classe')
+    const factionNav = document.querySelector('#faction')
+    const qualitieNav = document.querySelector('#qualitie')
+
+    const getAllData = async () => {
+      const fetchData = await fetch ('http://localhost:3000/info')
+      const dataJson = await fetchData.json()
+      const { types, classes, factions, qualities } = dataJson
+      
+      const factorySelect = (array, div) => {
+        array.map((item) => {
+          div.innerHTML += `<option value="${item}">${item}</option>`
+        })
+      }
+      
+      factorySelect(types, typeNav)
+      factorySelect(classes, classeNav)
+      factorySelect(factions, factionNav)
+      factorySelect(qualities, qualitieNav)
+    }
+    getAllData()
+  </script>
+
+</body>
+</html>
