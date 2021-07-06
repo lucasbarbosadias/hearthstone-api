@@ -54,7 +54,7 @@
       </li>
       <li>
         CLASS
-        <select name="classe" id="classe">
+        <select name="class" id="class">
           <option value="">Selecionar</option>
         </select>
       </li>
@@ -72,31 +72,10 @@
       </li>
     </ul>
   </nav>
+  
+  <div id="cards"></div>
 
-  <script>
-    const typeNav = document.querySelector('#type')
-    const classeNav = document.querySelector('#classe')
-    const factionNav = document.querySelector('#faction')
-    const qualitieNav = document.querySelector('#qualitie')
-
-    const getAllData = async () => {
-      const fetchData = await fetch ('http://localhost:3000/info')
-      const dataJson = await fetchData.json()
-      const { types, classes, factions, qualities } = dataJson
-      
-      const factorySelect = (array, div) => {
-        array.map((item) => {
-          div.innerHTML += `<option value="${item}">${item}</option>`
-        })
-      }
-      
-      factorySelect(types, typeNav)
-      factorySelect(classes, classeNav)
-      factorySelect(factions, factionNav)
-      factorySelect(qualities, qualitieNav)
-    }
-    getAllData()
-  </script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

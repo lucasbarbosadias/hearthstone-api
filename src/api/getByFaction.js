@@ -7,18 +7,22 @@ app.use(cors())
 var axios = require("axios").default
 app.use(express.json())
 
-var optionsFaction = {
-    method: 'GET',
-    url: 'https://omgvamp-hearthstone-v1.p.rapidapi.com/cards/factions/alliance',
-    headers: {
-        'x-rapidapi-key': 'ee008ec94emshdf37717471db23bp11b30cjsne9884bf668d6',
-        'x-rapidapi-host': 'omgvamp-hearthstone-v1.p.rapidapi.com'
+const optionsFaction = (op) => {
+    return {
+        method: 'GET',
+        url: `https://omgvamp-hearthstone-v1.p.rapidapi.com/cards/factions/${op}`,
+        headers: {
+            'x-rapidapi-key': 'ee008ec94emshdf37717471db23bp11b30cjsne9884bf668d6',
+            'x-rapidapi-host': 'omgvamp-hearthstone-v1.p.rapidapi.com'
+        }
     }
 }
 
-app.get('/faction', function (req, res) {
+app.get('/faction/:op', function (req, res) {
+
+    const { op } = req.params
   
-    axios.request(optionsFaction).then(function (response) {
+    axios.request(optionsFaction(op)).then(function (response) {
         res.send(response.data)
     }).catch(function (error) {
         console.error(error)
@@ -26,4 +30,4 @@ app.get('/faction', function (req, res) {
     
 })
 
-app.listen(3000)
+app.listen(3030)
