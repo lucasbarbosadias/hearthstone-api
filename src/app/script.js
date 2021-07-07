@@ -1,30 +1,79 @@
 const typeNav = document.querySelector('#type')
 const classNav = document.querySelector('#class')
 const factionNav = document.querySelector('#faction')
-const qualitieNav = document.querySelector('#qualitie')
+const qualitieNav = document.querySelector('#quality')
 const cardsDiv = document.querySelector('#cards')
+const quantNav = document.querySelector('#quant')
+let quantCards = 15
+let lastSelect = ''
 
-$(typeNav).on('change', function() {
-	console.log(this.value)
-    factoryCards('type', this.value)
+typeNav.addEventListener('change', function() {
+    factoryCards('type', this.value, quantCards)
 })
-$(classNav).on('change', function() {
-	console.log(this.value)
-    factoryCards('class', this.value)
+classNav.addEventListener('change', function() {
+    factoryCards('class', this.value, quantCards)
 })
-$(factionNav).on('change', function() {
-	console.log(this.value)
-    factoryCards('faction', this.value)
+factionNav.addEventListener('change', function() {
+    factoryCards('faction', this.value, quantCards)
 })
-$(qualitieNav).on('change', function() {
-	console.log(this.value)
-    factoryCards('quality', this.value)
+qualitieNav.addEventListener('change', function() {
+    factoryCards('quality', this.value, quantCards)
 })
+quantNav.addEventListener('change', function() {
+    setNumberCards(this.value)
+    reloadCards()
+})
+
+const selectOpNull = (filter) => {
+    const selects = ["type","class","faction","quality"]
+    selects.forEach((select) =>{
+        if(select != filter) {
+            document.getElementById(select).selectedIndex = 0;
+        }
+    })
+}
 
 const factorySelect = (array, div) => {
     array.map((item) => {
-      div.innerHTML += `<option value="${item}">${item}</option>`
-      //console.log(`${div.name}Select`)
+      div.innerHTML += `<option class="opt" value="${item}">${item}</option>`
+    })
+}
+
+const setNumberCards = (num) => quantCards = num
+
+const setLastSelect = (select) => lastSelect = select
+
+const reloadCards = () => {
+    if (lastSelect) {
+        const { value } = document.getElementById(lastSelect)
+        factoryCards(lastSelect, value, quantCards)
+    }
+}
+
+const factoryCards = async (filter, value, quant) => {
+    setLastSelect(filter)
+    cardsDiv.innerHTML = ''
+    selectOpNull(filter)
+    let contentFilter = ''
+    const list = await fetch(`http://localhost:3000/${filter}/${value.toLowerCase()}/${quant}`)
+    const responseFilter = await list.json()
+    const limitResponse = responseFilter      
+    limitResponse.map((item) => {     
+        if (item.img) {
+            contentFilter = `
+                <div class="card">
+                    <img src="${item.img}" class="card__img" alt="Card Image">
+                </div>
+            `
+            cardsDiv.innerHTML += contentFilter
+        } else {
+            contentFilter = `
+                <div class="card--noImg">
+                    <p class="card__font">${item.name}</p>
+                </div>
+            `
+            cardsDiv.innerHTML += contentFilter
+        }
     })
 }
 
@@ -37,23 +86,6 @@ const getAllData = async () => {
   factorySelect(classes, classNav)
   factorySelect(factions, factionNav)
   factorySelect(qualities, qualitieNav)
-}
-
-const factoryCards = async (filter, value) => {
-    cardsDiv.innerHTML = ''
-    const list = await fetch(`http://localhost:3030/${filter}/${value.toLowerCase()}`)
-    const responseFilter = await list.json()
-    responseFilter.map((item) => {
-        console.log(item)
-        // if (item.img) {
-        //     const contentFilter = `
-        //         <div class="card">
-        //             <img src="${item.img}" class="card__img" alt="Card Image">
-        //         </div>
-        //     `
-        //     cardsDiv.innerHTML += contentFilter
-        // }
-    })
 }
 
 getAllData()

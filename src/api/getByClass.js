@@ -1,10 +1,11 @@
-const express = require('express')
+//const express = require('express')
+import express from 'express'
 const app = express()
 
-const cors = require('cors')
+import cors from 'cors'
 app.use(cors())
 
-var axios = require("axios").default
+import axios from 'axios'
 app.use(express.json())
 
 const optionsClass = (op) => {
@@ -18,16 +19,16 @@ const optionsClass = (op) => {
     }
 }
 
-app.get('/class/:op', function (req, res) {
+app.get('/class/:op/:quant', function (req, res) {
   
-    const { op } = req.params
+    const { op, quant } = req.params
 
     axios.request(optionsClass(op)).then(function (response) {
-        res.send(response.data)
+        res.send(response.data.splice(0, quant))
     }).catch(function (error) {
         console.error(error)
     })
     
 })
 
-app.listen(3030)
+export default app

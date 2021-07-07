@@ -1,10 +1,11 @@
-const express = require('express')
+
+import express from 'express'
 const app = express()
 
-const cors = require('cors')
+import cors from 'cors'
 app.use(cors())
 
-var axios = require("axios").default
+import axios from 'axios'
 app.use(express.json())
 
 var options = {
@@ -26,4 +27,4 @@ app.get('/info', function (req, res) {
     
 })
 
-app.listen(3000)
+export default app
