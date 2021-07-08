@@ -5,7 +5,6 @@ import cors from 'cors'
 app.use(cors())
 
 import axios from 'axios'
-//app.use(express.json())
 
 const optionsType = (op) => {
     return {

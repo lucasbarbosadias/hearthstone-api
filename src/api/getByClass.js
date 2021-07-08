@@ -1,4 +1,4 @@
-//const express = require('express')
+//o import substitui o: const express = require('express')
 import express from 'express'
 const app = express()
 
@@ -6,7 +6,6 @@ import cors from 'cors'
 app.use(cors())
 
 import axios from 'axios'
-app.use(express.json())
 
 const optionsClass = (op) => {
     return {
